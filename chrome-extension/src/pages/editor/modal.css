@@ -1,0 +1,92 @@
+/* https://codepen.io/Idered/pen/DdeoeW */
+.modal {
+  opacity: 0;
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  text-align: left;
+  background: rgba(45,47,52, 0.2);
+  transition: opacity 0.25s ease;
+}
+
+.modal__bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  cursor: pointer;
+}
+
+.modal__state {
+  display: none;
+}
+
+.modal__state:checked + .modal {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal__state:checked + .modal .modal__inner {
+  top: 80px;
+}
+
+.modal__inner {
+  transition: top 0.25s ease;
+  position: absolute;
+  top: -20%;
+  right: 0;
+  /* bottom: 0; */
+  left: 0;
+  width: 60%;
+  min-width: 500px;
+  min-height: 300px;
+  margin: auto;
+  overflow: auto;
+  background: #fff;
+  border-radius: 5px;
+  padding: 1em 2em;
+}
+
+.modal__close {
+  position: absolute;
+  right: 1.5em;
+  top: 1.5em;
+  width: 1.1em;
+  height: 1.1em;
+  cursor: pointer;
+}
+
+.modal__close:after,
+.modal__close:before {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 1.5em;
+  background: #ccc;
+  display: block;
+  transform: rotate(45deg);
+  left: 50%;
+  margin: -3px 0 0 -1px;
+  top: 0;
+}
+
+.modal__close:hover:after,
+.modal__close:hover:before {
+  background: #aaa;
+}
+
+.modal__close:before {
+  transform: rotate(-45deg);
+}
+
+@media screen and (max-width: 768px) {
+  .modal__inner {
+    width: 90%;
+    min-width: none;
+    box-sizing: border-box;
+  }
+}

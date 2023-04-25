@@ -1,0 +1,49 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  background: #4aa181;
+  color: #fff;
+  font-size: 1.2em;
+
+  user-select: none;
+  cursor: default;
+}
+
+.header.secondary {
+  background:#5f9042;
+}
+
+.header > * {
+  margin: 15px;
+}
+
+.header a {
+  color: #ffffff;
+}
+
+.header img,
+.header .img {
+  height: 1em;
+}
+
+.header > .button-back {
+  cursor: pointer;
+  margin: 0;
+  padding: 18px 15px 12px 15px;
+}
+.header > .button-back .img {
+  transition: all .2s;
+}
+
+.header > .button-back:hover .img {
+  transform: translateY(-3px);
+}
+
+#version {
+  margin-bottom: -1px;
+  margin-left: 4px;
+  font-size: .75em;
+}

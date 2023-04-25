@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "incremental": true,
+    "target": "es2022",
+    "outDir": ".tsc",
+    "skipLibCheck": true,
+    "removeComments": true,
+    "declaration": false,
+    "sourceMap": true,
+    "lib": [
+      "DOM",
+      "WebWorker"
+    ]
+  },
+  "include": [
+    "src",
+    "test"
+  ],
+  "exclude": [
+    "node_modules/**"
+  ]
+}

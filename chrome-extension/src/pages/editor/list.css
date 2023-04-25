@@ -1,0 +1,102 @@
+#list {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  position: relative;
+}
+#list .item {
+  user-select: none;
+  border-radius: 8px;
+  border: 2px solid #dfe1e3;
+  padding: 8px;
+  margin-bottom: 15px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: #fff;
+}
+#list .item.new {
+  border: 2px dashed #dfe1e3;
+}
+#list .item.dragging {
+  transition: 0.01s;
+  transform: translateX(-9999px);
+}
+
+#list .item .handle {
+  padding: 8px;
+  border-radius: 8px;
+  border: 2px dashed #caccd1;
+  transition: all .15s;
+  cursor: pointer;
+  margin-right: 12px;
+}
+#list .item .handle svg {
+  width: 26px;
+  height: 26px;
+  color: #caccd1;
+  transition: all .15s;
+}
+#list .item .handle:hover {
+  border-color: #9ad0bc;
+}
+#list .item .handle:hover svg {
+  color: #9ad0bc;
+}
+
+#list .item .content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#list .item .content .title {
+  color: #24262a;
+  font-family: "Open Sans" sans-serif;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+#list .item .content .text {
+  color: #6d747e;
+  font-size: .9em;
+  font-family: "Noto Serif" serif;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+
+#list .item .edit,
+#list .item .del {
+  transition: all .15s;
+  cursor: pointer;
+  padding: 6px;
+}
+#list .item .edit svg,
+#list .item .del svg {
+  width: 24px;
+  height: 24px;
+  color: #caccd1;
+  transition: all .15s;
+}
+
+#list .item .edit svg {
+  color: #e3f1ff;
+}
+#list .item .edit:hover svg {
+  color: #95cbfe;
+}
+#list .item .del svg {
+  color: #feddd7;
+}
+#list .item .del:hover svg {
+  color: #fcbcb2;
+}

@@ -1,0 +1,33 @@
+#prompt-list {
+  transition: all .15s;
+  opacity: 0;
+  transform: translateY(-100%);
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  border: 0;
+  background: white;
+  min-height: 100%;
+}
+#prompt-list.visible {
+  opacity: 1;
+  transform: translateY(0%);
+}
+
+#download-list {
+  transition: all .15s;
+  opacity: 0;
+  transform: translateY(-100%);
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  border: 0;
+  background: white;
+  min-height: 100%;
+}
+#download-list.visible {
+  opacity: 1;
+  transform: translateY(0%);
+}
