@@ -1,0 +1,3 @@
+# Code Comments Helper
+
+I am going to send you a code snippet. and I would appreciate your assistance in generating missing comments for the fields, parameters, variables, and any important sections of the code. Additionally, please feel free to clarify any existing comments in the code if you believe your version would be more clear and accurate for human readers.
