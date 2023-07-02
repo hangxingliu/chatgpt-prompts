@@ -10,6 +10,10 @@ const projectDir = path.resolve(__dirname, '..');
 clean(path.resolve(projectDir, '.tsc'));
 clean(path.resolve(projectDir, 'ext'), true);
 
+/**
+ * @param {string} dir
+ * @param {boolean} [keep]
+ */
 function clean(dir, keep = false) {
   try {
     if (!fs.existsSync(dir)) return;

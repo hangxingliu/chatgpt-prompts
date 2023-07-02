@@ -5,6 +5,11 @@
 const fs = require("fs-extra");
 const { resolve, basename } = require("path");
 
+const flag = process.env.USE_DEFAULT_RESOURCE
+const useDefaultsOnly = /^(1|y|yes|true|on|enabled)$/i.test(flag || '');
+if (useDefaultsOnly)
+  console.warn(`flag: USE_DEFAULT_RESOURCE = enabled`);
+
 const defaultResourcesBase = resolve(__dirname, "../default-resources");
 const customResourcesBase = resolve(__dirname, "../custom-resources");
 const targetBase = resolve(__dirname, '..');
@@ -22,11 +27,13 @@ for (const [file, target] of Object.entries(files)) {
     fs.mkdirpSync(targetDir);
     mkdir.add(targetDir);
   }
-  const customResource = resolve(customResourcesBase, file);
-  if (fs.existsSync(customResource)) {
-    fs.copySync(customResource, resolve(targetDir, file));
-    console.log(`copied ${file} from ${basename(customResourcesBase)}`);
-    continue;
+  if (!useDefaultsOnly) {
+    const customResource = resolve(customResourcesBase, file);
+    if (fs.existsSync(customResource)) {
+      fs.copySync(customResource, resolve(targetDir, file));
+      console.log(`copied ${file} from ${basename(customResourcesBase)}`);
+      continue;
+    }
   }
   const defaultResource = resolve(defaultResourcesBase, file);
   fs.copySync(defaultResource, resolve(targetDir, file));
