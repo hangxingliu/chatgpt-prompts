@@ -31,8 +31,8 @@ jobs:
     needs: check-repo
     name: Continuous integration (Node.js 18)
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: 'Print latest 5 git logs'
@@ -41,9 +41,11 @@ jobs:
         run: cd chrome-extension && yarn install
       - name: 'Build'
         run: cd chrome-extension && yarn run build
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: extension
           path: chrome-extension/ext
           if-no-files-found: error
+          retention-days: 90
+          compression-level: 9
 
