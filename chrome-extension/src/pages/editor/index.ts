@@ -12,6 +12,7 @@ main().catch((error) => {
 });
 async function main() {
   const idb = new ExtensionIDB();
+  await idb.fixLinkedList();
   await addDefaultPrompts(idb);
   await initList();
 

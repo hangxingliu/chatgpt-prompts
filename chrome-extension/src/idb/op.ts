@@ -16,6 +16,8 @@ async function initIDB() {
       needUpgrade = true;
     },
   });
+  const head = await db.get("promptsV1", 0);
+  if (!head) needUpgrade = true;
   if (needUpgrade) {
     await db.put("promptsV1", {
       key: 0,
@@ -64,16 +66,24 @@ export class ExtensionIDB {
     const db = await this.init();
     const tx = db.transaction("promptsV1", "readwrite");
     const now = Date.now();
-    const nextKey = await tx.store.add({
+    const newItemKey = await tx.store.add({
       ...payload,
       ctime: now,
       mtime: now,
       usage: 0,
     });
-    const cursor = await tx.store.openCursor(IDBKeyRange.upperBound(nextKey, true), "prev");
-    if (cursor) await cursor.update({ ...cursor.value, nextKey });
+
+    let cursor = await tx.store.openCursor(IDBKeyRange.upperBound(newItemKey, true), "prev");
+    if (cursor) {
+      const oldNextKey = cursor.value.nextKey;
+      await cursor.update({ ...cursor.value, nextKey: newItemKey });
+      if (oldNextKey) {
+        cursor = await tx.store.openCursor(newItemKey);
+        await cursor.update({ ...cursor.value, nextKey: oldNextKey });
+      }
+    }
     await tx.done;
-    return nextKey;
+    return newItemKey;
   };
 
   del = async (key: number) => {
@@ -176,5 +186,60 @@ export class ExtensionIDB {
     }
     await tx.done;
     return prompt;
+  };
+
+  fixLinkedList = async () => {
+    const db = await this.init();
+    const tx = db.transaction("promptsV1", "readwrite");
+    let cursor = await tx.store.openKeyCursor(IDBKeyRange.lowerBound(0, true), "next");
+
+    while (cursor) {
+      const items = await tx.store.index("byNextKey").getAll(cursor.key);
+      for (let i = 1; i < items.length; i++) {
+        const item = items[i];
+        console.log(`fixing: reset the nextKey of the item#${item.key} (originalNextKey=${item.nextKey})`);
+        item.nextKey = undefined;
+        await tx.store.put(item);
+      }
+      cursor = await cursor.continue();
+    }
+
+    let tail = await tx.store.get(0);
+    while (tail) {
+      if (tail.nextKey) tail = await tx.store.get(tail.nextKey);
+      else break;
+    }
+    if (!tail) {
+      console.warn(`fixing: failed to find the tail of the linked list`);
+      return;
+    }
+
+    cursor = await tx.store.openKeyCursor(null, "next");
+    const danglingKeys: number[] = [];
+    while (cursor) {
+      // ignore the head
+      if (cursor.key > 0) {
+        const count = await tx.store.index("byNextKey").count(cursor.key);
+        if (count === 0) danglingKeys.push(cursor.key);
+      }
+      cursor = await cursor.continue();
+    }
+
+    if (danglingKeys.length > 0) {
+      console.log(`fixing: dangling items: ${danglingKeys}`);
+      const queue = [tail.key].concat(danglingKeys);
+      for (let i = 1; i < queue.length; i++) {
+        const baseKey = queue[i - 1];
+        const nextKey = queue[i];
+        const cursor = await tx.store.openCursor(baseKey);
+        if (!cursor) {
+          console.warn(`fixing: failed to find the item#${baseKey}`);
+          continue;
+        }
+        console.log(`- fixing: key="${baseKey}" nextKey=${nextKey} "${cursor.value.title}"`);
+        await cursor.update({ ...cursor.value, nextKey });
+      }
+    }
+    await tx.done;
   };
 }

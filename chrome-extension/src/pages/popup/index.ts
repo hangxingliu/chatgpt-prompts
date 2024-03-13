@@ -53,7 +53,9 @@ function main() {
 
   const idb = new ExtensionIDB();
   let prompts: PromptsV1Item[];
-  addDefaultPrompts(idb)
+  idb
+    .fixLinkedList()
+    .then(() => addDefaultPrompts(idb))
     .then(() => initPromptsList(idb, $promptList.querySelector(".group"), onClickItem))
     .then((_prompts) => (prompts = _prompts))
     .catch((e) => console.error(e));
