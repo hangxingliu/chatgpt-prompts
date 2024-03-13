@@ -2,6 +2,7 @@ import { addDefaultPrompts } from "../../idb/add-default-prompts";
 import { ExtensionIDB } from "../../idb/op";
 import { PromptsV1Item } from "../../idb/types";
 import { $, el } from "../../utils/dom";
+import { downloadJSONFile } from "../../utils/download";
 import { getFormValues } from "../../utils/form";
 import { createEditForm } from "./edit-form";
 import { getAddListItem, getListItem } from "./list-item";
@@ -15,6 +16,11 @@ async function main() {
   await idb.fixLinkedList();
   await addDefaultPrompts(idb);
   await initList();
+  await initToolbar();
+
+  async function initToolbar() {
+    $("#btn-export").addEventListener("click", exportItems);
+  }
 
   async function initList() {
     const $list = $("#list");
@@ -34,7 +40,7 @@ async function main() {
         edit(item);
       });
       elements.del.addEventListener("click", (ev) => {
-        const ok = confirm(`Delete the prompt?\n${item.title}`)
+        const ok = confirm(`Delete the prompt?\n${item.title}`);
         if (!ok) return;
         idb.del(item.key).then((ok) => {
           if (ok) setTimeout(initList);
@@ -85,5 +91,17 @@ async function main() {
       return false;
     }
     return true;
+  }
+
+  async function exportItems() {
+    const items = await idb.getAll();
+    const result = [];
+    for (const item of items) {
+      delete item.nextKey;
+      delete item.mtime;
+      delete item.ctime;
+      result.push(item);
+    }
+    downloadJSONFile("prompts.json", result);
   }
 }

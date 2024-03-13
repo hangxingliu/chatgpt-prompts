@@ -35,6 +35,17 @@ body {
   padding: 15px;
   border-bottom: 1px solid #ccc;
   background-color: #fff;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#toolbar a {
+  color: #0d88fd;
+}
+#toolbar a:visited {
+  color: #0d88fd;
 }
 
 .toolbar_wrapper {
