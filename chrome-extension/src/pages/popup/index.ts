@@ -115,7 +115,7 @@ function main() {
         if (!info) return;
 
         const { sessionId, fileName } = info;
-        const res = await fetch(`https://chat.openai.com/backend-api/conversation/${sessionId}`, {
+        const res = await fetch(`https://chatgpt.com/backend-api/conversation/${sessionId}`, {
           headers: {
             Authorization: `Bearer ${state.accessToken}`,
           },

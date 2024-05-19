@@ -33,6 +33,9 @@ export function inject(parameters: { text: string }) {
 
     button = input.parentElement.lastElementChild as HTMLButtonElement;
     if (button?.tagName === "BUTTON") return button;
+
+    button = input.parentElement.parentElement.lastElementChild as HTMLButtonElement;
+    if (button?.tagName === "BUTTON") return button;
   }
   async function inputPrompt(input: HTMLTextAreaElement, button: HTMLButtonElement) {
     input.focus();

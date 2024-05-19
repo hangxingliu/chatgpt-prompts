@@ -31,7 +31,7 @@ chrome.webRequest.onSendHeaders.addListener(
     }
   },
   {
-    urls: [concatURI(chatGPTAPIBase, "*")],
+    urls: chatGPTAPIBase.map(it => concatURI(it, "*")),
   },
   ["requestHeaders"]
 );

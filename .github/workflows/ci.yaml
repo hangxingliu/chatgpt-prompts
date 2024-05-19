@@ -39,8 +39,8 @@ jobs:
         run: git log --branches --all --decorate --oneline -n 5
       - name: 'Install'
         run: cd chrome-extension && yarn install
-      - name: 'Build'
-        run: cd chrome-extension && yarn run build
+      - name: 'Test and Build'
+        run: cd chrome-extension && yarn run test:types && yarn run build
       - uses: actions/upload-artifact@v4
         with:
           name: extension
